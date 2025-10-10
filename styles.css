@@ -1,0 +1,91 @@
+:root {
+  --surface: #ffffff;
+  --surface-alt: #f8fafc; /* slate-50 */
+  --text: #0f172a;        /* slate-900 */
+  --muted: #475569;       /* slate-600 */
+  --border: #e5e7eb;      /* slate-200 */
+  --primary: #4f46e5;     /* indigo-600 */
+  --primary-strong: #4338ca; /* indigo-700 */
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.08);
+}
+
+/* Minimal baseline */
+html, body {
+  background: var(--surface);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* Header: cleaner border and subtle elevation */
+header.sticky {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow-sm);
+}
+
+/* Inputs/selects: softer outlines */
+input[type="text"], select {
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow-sm);
+}
+input[type="text"]:focus, select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+}
+
+/* Cards: flatter, minimal hover lift */
+li.group {
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow-sm);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+li.group:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Pills and labels */
+span[class*="rounded-full"] {
+  border-color: var(--border) !important;
+}
+
+/* Buttons: unify primary style without changing markup */
+button[class*="bg-indigo-"] {
+  background: var(--primary) !important;
+  box-shadow: var(--shadow-sm);
+  transition: transform 120ms ease, box-shadow 120ms ease, background-color 120ms ease;
+}
+button[class*="bg-indigo-"]:hover {
+  background: var(--primary-strong) !important;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Secondary buttons */
+button[class*="bg-white"][class*="border"] {
+  border-color: var(--border) !important;
+  box-shadow: var(--shadow-sm);
+}
+button[class*="bg-white"][class*="border"]:hover {
+  background: #f9fafb !important;
+}
+
+/* Modal backdrops already defined inline; ensure content has clean edges */
+.rounded-xl {
+  border-radius: 14px;
+}
+
+/* Reduce excessive letter spacing on headings for a crisp look */
+h1, h2, h3 {
+  letter-spacing: -0.015em;
+}
+
+/* Tiny icon refinement */
+.text-xl.leading-none {
+  line-height: 1 !important;
+}
+
+

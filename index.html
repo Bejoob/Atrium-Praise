@@ -9,12 +9,13 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
     <style>
       html { font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
       .font-display { font-family: 'Playfair Display', serif; }
     </style>
   </head>
-  <body class="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-100 text-slate-900">
+  <body class="min-h-screen bg-white text-slate-900">
     <div id="root"></div>
 
     <!-- React 18 + ReactDOM -->
@@ -96,7 +97,6 @@
 
         const [query, setQuery] = useState('');
         const [dateOrder, setDateOrder] = useState('none'); // 'none' | 'recent' | 'oldest'
-        const [showHelp, setShowHelp] = useState(false);
         const [playerId, setPlayerId] = useState('');
         const [playerExternalUrl, setPlayerExternalUrl] = useState('');
         const [autoplay, setAutoplay] = useState(true);
@@ -189,7 +189,6 @@
                   </div>
                 </div>
                 <div className="flex items-center gap-3">
-                  <button onClick={() => setShowHelp(true)} className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Instruções</button>
                   <button onClick={() => setShowSchedule(true)} className="text-sm font-medium text-indigo-600 hover:text-indigo-800 transition-colors">Escala</button>
                 </div>
               </div>
@@ -300,23 +299,7 @@
               </div>
             )}
 
-            {showHelp && (
-              <div className="fixed inset-0 z-40 flex items-center justify-center p-4 backdrop-blur-sm">
-                <div className="absolute inset-0 bg-black/50" onClick={() => setShowHelp(false)} />
-                <div className="relative z-10 w-full max-w-2xl rounded-xl bg-white shadow-2xl overflow-hidden">
-                  <div className="flex items-center justify-between px-4 py-3 border-b border-slate-200 bg-slate-50">
-                    <span className="text-base font-semibold text-slate-800">Instruções de Uso</span>
-                    <button onClick={() => setShowHelp(false)} className="text-slate-500 hover:text-slate-800 transition-colors text-xl leading-none">✕</button>
-                  </div>
-                  <div className="p-5 text-sm text-slate-700 space-y-3">
-                    <p>Edite o array <code>SONGS</code> no topo desta página. Cada item contém <code>id</code>, <code>title</code>, <code>link</code>, <code>key</code>, e opcionalmente <code>tags</code> e <code>chorus</code>.</p>
-                    <p>Utilize a busca por título ou tags, e a ordenação por data. Clique em <em>Play</em> para assistir no YouTube ou <em>Abrir no YouTube</em> para acessar diretamente.</p>
-                    <p>Os botões de <em>Exportar CSV</em> permitem baixar todas as músicas ou apenas as filtradas.</p>
-                    <p><strong>Publicação:</strong> Este é um arquivo estático (não usa backend). Basta fazer upload para serviços como GitHub Pages, Vercel ou Netlify.</p>
-                  </div>
-                </div>
-              </div>
-            )}
+            
 
             {showSchedule && (
               <div className="fixed inset-0 z-40 flex items-center justify-center p-4 backdrop-blur-sm">
