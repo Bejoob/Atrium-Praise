@@ -30,13 +30,18 @@
       // 2) Publique este arquivo diretamente (GitHub Pages, Vercel, Netlify).
       // 3) Este arquivo não usa backend. É somente leitura.
 
+      const LOCAL_STORAGE_KEY = 'atrium_praise_next_sunday_songs';
+
       const SONGS = [
         { id: '1', title: 'O Que Sua Glória Fez Comigo', link: 'https://www.youtube.com/watch?v=9fZph9kZkgM&list=RD9fZph9kZkgM&start_radio=1', key: 'C', tags: ['adoração'], chorus: 'Quem ja pisou no Santo dos Santos...', lastPlayedDate: '28/09/2025' },
         { id: '2', title: 'Digino de tudo', link: 'https://www.youtube.com/watch?v=cQlEODXxnu0&list=RDcQlEODXxnu0&start_radio=1', key: 'F', tags: ['louvor'], chorus: 'Os santos e os Anjos', lastPlayedDate: '28/09/2025' },
         { id: '3', title: 'Quem é esse', link: 'https://www.youtube.com/watch?v=0ZF5em0MTwY&list=RD0ZF5em0MTwY&start_radio=1', key: 'B', tags: ['adoração'], chorus: 'Quem é esse, que era sem pecado e não me condenou...', lastPlayedDate: '28/09/2025' },
         { id: '4', title: 'Maravilhosa Graça', link: 'https://www.youtube.com/watch?v=nv-T2_JPKZA&list=RDnv-T2_JPKZA&start_radio=1', key: 'D', tags: ['celebração'], chorus: 'Maravilhosa graça, seu infnito amor', lastPlayedDate: '' },
         { id: '5', title: 'Há Poder', link: 'https://www.youtube.com/watch?v=4WmlJFsxDv4', key: 'B', tags: ['adoração'], chorus: 'Há Poder no teu nome, Jesus, rei sobre o trono', lastPlayedDate: '' },
-        { id: '6', title: 'Tu és Deus (A Ele)', link: 'https://www.youtube.com/watch?v=6YQNTOj-OLM', key: 'F', tags: ['adoração'], chorus: 'Tu és Deus (A Ele)', lastPlayedDate: '' }
+        { id: '6', title: 'Tu és Deus (A Ele)', link: 'https://www.youtube.com/watch?v=6YQNTOj-OLM', key: 'F', tags: ['adoração'], chorus: 'Tu és Deus (A Ele)', lastPlayedDate: '' },
+        { id: '7', title: 'Give me Jesus (Quero Jesus)', link: 'https://www.youtube.com/watch?v=XQqRFvYHARs', key: '?', tags: ['Adoração'], chorus: 'Quero Jesus, nada mais me satisfaz', lastPlayedDate: '' },
+        { id: '8', title: 'Essência da Adoração', link: 'https://www.youtube.com/watch?v=OI8ND8O6I6M', key: '?', tags: ['Adoração'], chorus: 'Estou voltando, a essência da adoração', lastPlayedDate: '' },
+        { id: '9', title: 'Nada Mais', link: 'https://www.youtube.com/watch?v=N5AMmLZjaaM', key: '?', tags: ['Adoração'], chorus: 'Só quero a ti, e nada mais', lastPlayedDate: '' }
       ];
 
       const PRAISE_SCHEDULE = [
@@ -101,6 +106,24 @@
         const [playerExternalUrl, setPlayerExternalUrl] = useState('');
         const [autoplay, setAutoplay] = useState(true);
         const [showSchedule, setShowSchedule] = useState(false);
+
+        const [nextSundaySongs, setNextSundaySongs] = useState(() => {
+          try {
+            const storedSongs = localStorage.getItem(LOCAL_STORAGE_KEY);
+            return storedSongs ? JSON.parse(storedSongs) : [];
+          } catch (error) {
+            console.error("Error reading from localStorage", error);
+            return [];
+          }
+        });
+
+        useEffect(() => {
+          try {
+            localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(nextSundaySongs));
+          } catch (error) {
+            console.error("Error writing to localStorage", error);
+          }
+        }, [nextSundaySongs]);
 
         // Filtro por tom removido por solicitação
 
@@ -232,6 +255,49 @@
               </div>
             </section>
 
+            <section className="mx-auto max-w-7xl px-4 py-6 sm:py-8 bg-slate-800 rounded-lg shadow-xl mb-8 border border-indigo-700">
+              <h2 className="font-display text-2xl font-bold text-white mb-4">Músicas do Próximo Domingo</h2>
+              <div className="bg-white rounded-md border border-slate-200 p-4">
+                {nextSundaySongs.length === 0 ? (
+                  <p className="text-slate-400 text-center py-4">Nenhuma música adicionada para o próximo domingo.</p>
+                ) : (
+                  <ul className="space-y-4">
+                    {nextSundaySongs.map((song, index) => (
+                      <li key={song.id || index} className="group relative rounded-lg border border-slate-700 bg-slate-900 p-4 shadow-lg hover:shadow-indigo-500/50 transition-all duration-300 ease-in-out">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                          <div className="min-w-0 flex-1">
+                            <h3 className="font-semibold text-white text-lg sm:text-xl truncate">{song.title}</h3>
+                            {song.chorus && (
+                              <p className="mt-1 text-slate-400 text-sm line-clamp-2">{song.chorus}</p>
+                            )}
+                            <div className="mt-2 flex flex-wrap items-center gap-2">
+                              {song.key && (
+                                <span className="text-xs inline-flex items-center rounded-full bg-indigo-700 text-indigo-200 px-2.5 py-0.5 font-medium border border-indigo-500">Tom: {song.key}</span>
+                              )}
+                              {(song.tags || []).map(tag => (
+                                <span key={tag} className="text-xs inline-flex items-center rounded-full bg-slate-700 text-slate-300 px-2.5 py-0.5 font-medium border border-slate-600">{tag}</span>
+                              ))}
+                              {song.lastPlayedDate && (
+                                <span className="text-xs text-slate-400 ml-auto sm:ml-0">Última vez: <span className="font-medium">{song.lastPlayedDate}</span></span>
+                              )}
+                            </div>
+                          </div>
+                          <div className="flex-shrink-0 flex items-center gap-2">
+                            <button onClick={() => onPlay(song)} className="px-5 py-2 rounded-lg bg-indigo-500 text-white text-base font-medium hover:bg-indigo-600 transition-colors shadow-md">Play</button>
+                            <button
+                              onClick={() => setNextSundaySongs(prev => prev.filter((_, i) => i !== index))}
+                              className="text-slate-400 hover:text-red-500 transition-colors text-xl leading-none p-2"
+                              aria-label="Remover música"
+                            >✕</button>
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            </section>
+
             <main className="mx-auto max-w-7xl px-4 pb-12">
               {filteredSongs.length === 0 ? (
                 <div className="rounded-lg border border-dashed border-slate-300 bg-white p-8 text-center text-slate-500 shadow-sm">Nenhuma música encontrada com os critérios de busca.</div>
@@ -260,6 +326,16 @@
                         </div>
                         <div className="flex-shrink-0">
                           <button onClick={() => onPlay(song)} className="px-5 py-2 rounded-lg bg-indigo-600 text-white text-base font-medium hover:bg-indigo-700 transition-colors shadow-md">Play</button>
+                          <button 
+                            onClick={() => {
+                              if (!nextSundaySongs.some(s => s.id === song.id)) {
+                                setNextSundaySongs(prev => [...prev, song]);
+                              }
+                            }}
+                            className="px-3 py-2 rounded-lg bg-emerald-600 text-white text-base font-medium hover:bg-emerald-700 transition-colors shadow-md"
+                          >
+                            Add
+                          </button>
                         </div>
                       </div>
                     </li>
